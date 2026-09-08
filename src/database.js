@@ -61,6 +61,21 @@ db.exec(`
     ultimo_id  TEXT,
     revisado   INTEGER
   );
+
+  CREATE TABLE IF NOT EXISTS mensajes_programados (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    guild_id     TEXT NOT NULL,
+    canal_id     TEXT NOT NULL,
+    titulo       TEXT,
+    contenido    TEXT NOT NULL,
+    tipo         TEXT NOT NULL DEFAULT 'general',
+    cron         TEXT NOT NULL,
+    descripcion  TEXT NOT NULL,
+    activo       INTEGER NOT NULL DEFAULT 1,
+    creado_por   TEXT NOT NULL,
+    creado_en    INTEGER NOT NULL,
+    ultimo_envio INTEGER
+  );
 `);
 
 export const sanciones = {
@@ -130,6 +145,22 @@ export const feedEstado = {
     `INSERT INTO feed_estado (url, ultimo_id, revisado) VALUES (?, ?, ?)
      ON CONFLICT(url) DO UPDATE SET ultimo_id = excluded.ultimo_id, revisado = excluded.revisado`
   ),
+};
+
+export const mensajesProgramados = {
+  crear: db.prepare(
+    `INSERT INTO mensajes_programados
+       (guild_id, canal_id, titulo, contenido, tipo, cron, descripcion, creado_por, creado_en)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ),
+  listar: db.prepare(`SELECT * FROM mensajes_programados WHERE guild_id = ? ORDER BY id ASC`),
+  obtener: db.prepare(`SELECT * FROM mensajes_programados WHERE id = ? AND guild_id = ?`),
+  activos: db.prepare(`SELECT * FROM mensajes_programados WHERE activo = 1`),
+  eliminar: db.prepare(`DELETE FROM mensajes_programados WHERE id = ? AND guild_id = ?`),
+  cambiarEstado: db.prepare(
+    `UPDATE mensajes_programados SET activo = ? WHERE id = ? AND guild_id = ?`
+  ),
+  marcarEnvio: db.prepare(`UPDATE mensajes_programados SET ultimo_envio = ? WHERE id = ?`),
 };
 
 export default db;
