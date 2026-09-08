@@ -11,6 +11,7 @@ Bot de Discord para el servidor de estudio del ingreso a Ingeniería en Sistemas
 | Bienvenidas | Embed de bienvenida + asignación automática de rol de miembro |
 | Anuncios | `/anuncio` con cuatro formatos (general, académico, urgente, evento) |
 | Fechas importantes | Recordatorios automáticos a 30, 14, 7, 3 y 1 día, y el mismo día (09:00 ART) |
+| Mensajes programados | Mensajes recurrentes automáticos a un canal (diarios, días hábiles, semanales o cada N horas) |
 | Salas de voz temporales | Canal "Únete para crear" con control de nombre y límite por el dueño |
 | Salas privadas | Canales de texto privados con invitación y expulsión manual |
 | Autoroles | Paneles de botones para roles autoasignables |
@@ -75,6 +76,21 @@ Bot de Discord para el servidor de estudio del ingreso a Ingeniería en Sistemas
 /encuesta pregunta:"..." opcion1:"..." opcion2:"..." [opcion3-10] [multiple]
 /autoroles titulo:"..." descripcion:"..." rol1:@Rol [rol2-10] [estilo] [canal]
 ```
+
+### Mensajes programados (requiere permiso *Gestionar mensajes*)
+```
+/programar crear frecuencia:Diaria mensaje:"Repasen las guías 📘" hora:09:00 [titulo] [tipo] [canal]
+/programar crear frecuencia:Semanal mensaje:"..." hora:20:00 dia:Domingo
+/programar crear frecuencia:"Cada N horas" mensaje:"..." cada-horas:6
+/programar listar
+/programar pausar id:2
+/programar reanudar id:2
+/programar probar id:2      ← lo envía ahora para previsualizarlo
+/programar eliminar id:2
+```
+La frecuencia se traduce a un horario en zona **Córdoba (ART)**. Si no se indica
+`canal`, se usa `CHANNEL_ANUNCIOS`. `tipo` controla el color/ícono del embed
+(`general`, `recordatorio`, `tip`, `info`) y `\n` genera saltos de línea en el mensaje.
 
 ### Salas
 ```

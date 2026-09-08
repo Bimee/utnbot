@@ -2,6 +2,7 @@ import { Events, ActivityType } from "discord.js";
 import { canalesTemporales } from "../database.js";
 import { iniciarRecordatorios } from "../services/scheduler.js";
 import { iniciarFeeds } from "../services/feeds.js";
+import { iniciarMensajesProgramados } from "../services/mensajesProgramados.js";
 import { log } from "../utils/logger.js";
 
 export default {
@@ -28,5 +29,6 @@ export default {
 
     iniciarRecordatorios(client);
     iniciarFeeds(client);
+    iniciarMensajesProgramados(client);
   },
 };
